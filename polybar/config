@@ -28,7 +28,8 @@ disabled = #707880
 [bar/example]
 width = 100%
 height = 24pt
-radius = 6
+bottom = true
+radius = 0
 
 ; dpi = 96
 
@@ -37,7 +38,7 @@ foreground = ${colors.foreground}
 
 line-size = 3pt
 
-border-size = 4pt
+border-size = 0pt
 border-color = #00000000
 
 padding-left = 0
@@ -51,8 +52,7 @@ separator-foreground = ${colors.disabled}
 font-0 = monospace;2
 
 modules-left = xworkspaces xwindow
-modules-right = battery pulseaudio xkeyboard memory cpu wlan eth date
-
+modules-right = battery-upower pulseaudio xkeyboard memory cpu wlan eth date
 
 cursor-click = pointer
 cursor-scroll = ns-resize
@@ -65,17 +65,8 @@ enable-ipc = true
 
 ; override-redirect = true
 
-; This module is not active by default (to enable it, add it to one of the
-; modules-* list above).
-; Please note that only a single tray can exist at any time. If you launch
-; multiple bars with this module, only a single one will show it, the others
-; will produce a warning. Which bar gets the module is timing dependent and can
-; be quite random.
-; For more information, see the documentation page for this module:
-; https://polybar.readthedocs.io/en/stable/user/modules/tray.html
 [module/systray]
 type = internal/tray
-
 format-margin = 8pt
 tray-spacing = 16pt
 
@@ -150,12 +141,13 @@ label-disconnected = %{F#F0C674}%ifname%%{F#707880} disconnected
 [module/wlan]
 inherit = network-base
 interface-type = wireless
-label-connected = %{F#F0C674}%ifname%%{F-} %essid% %local_ip%
+label-connected = %{F#F0C674}Wifi%{F-} %essid%
+label-disconnected = %{F#707880}Wifi%{F-} disconnected
 
 [module/eth]
 inherit = network-base
 interface-type = wired
-label-connected = %{F#F0C674}%ifname%%{F-} %local_ip%
+label-connected = %ifname%
 
 [module/date]
 type = internal/date
@@ -167,26 +159,11 @@ date-alt = %Y-%m-%d %H:%M:%S
 label = %date%
 label-foreground = ${colors.primary}
 
-[module/battery]
-type = internal/battery
-battery = BAT1
-adapter = ACAD
-full-at = 98
-
-format-charging = <label-charging>
-format-discharging = <label-discharging>
-format-full = <label-full>
-
-label-charging = ⚡ %percentage%% (%time%)
-label-discharging = 🔋 %percentage%% (%time%)
-label-full = 🔌 %percentage%%
-
-label-charging-foreground = ${colors.primary}
-label-discharging-foreground = ${colors.primary}
-label-full-foreground = ${colors.secondary}
-
-
-
+[module/battery-upower]
+type = custom/script
+exec = ~/.config/polybar/battery-time.sh
+interval = 30
+label = %output%
 
 [settings]
 screenchange-reload = true

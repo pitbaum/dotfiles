@@ -123,6 +123,9 @@ exec_always --no-startup-id xsetroot -solid black; feh --bg-center /home/ene/Doc
 ### Polybar Integration ###
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 
+### Screenshot tool with flameshot ###
+bindsym Print exec flameshot gui --path "$HOME/Downloads"
+
 ### Misc ###
 floating_modifier $mod
 
